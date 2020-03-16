@@ -101,6 +101,23 @@ RUN \
                 && rm FreeCAD/ freecad-build/ -fR \
                 && ln -s /usr/local/bin/FreeCAD /usr/bin/freecad-git
 
+# Install GUI libraries that require to import Draft, Arch modules.
+RUN pip${PYTHON_MINOR_VERSION} install PySide2
+RUN pip${PYTHON_MINOR_VERSION} install six
+RUN \
+    ln -s \
+        /usr/local/lib/python${PYTHON_MINOR_VERSION}/dist-packages/PySide2 \
+        /usr/local/lib/python${PYTHON_MINOR_VERSION}/dist-packages/PySide
+
+# This file is generated when we compile FreeCAD with GUI but right now
+# while importing Draft module, Draft module is look for Draft_rc.py file.
+# Bug in Draft module.
+COPY Draft_rc.py /usr/local/Mod/Draft/Draft_rc.py
+
+# Fixed bug in translate.py file.
+COPY translate.py /usr/local/Mod/Draft/draftutils/translate.py
+
+
 # Clean
 RUN apt-get clean \
     && rm /var/lib/apt/lists/* \
