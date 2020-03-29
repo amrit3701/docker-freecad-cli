@@ -117,6 +117,9 @@ COPY Draft_rc.py /usr/local/Mod/Draft/Draft_rc.py
 # Fixed bug in translate.py file.
 COPY translate.py /usr/local/Mod/Draft/draftutils/translate.py
 
+# Make Python already know all FreeCAD modules / workbenches.
+RUN echo "import FreeCAD\n" > /.startup.py
+ENV PYTHONSTARTUP "/.startup.py"
 
 # Clean
 RUN apt-get clean \
