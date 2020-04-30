@@ -12,3 +12,14 @@
 
 docker-freecad-cli
 ~~~~~~~~~~~~~~~~~~
+
+How to run image?
+====================
+
+1. First, pull the image::
+
+    docker pull amrit3701/freecad-cli:latest
+
+2. Run docker image::
+
+    docker run -it docker pull amrit3701/freecad-cli:lastest bash
