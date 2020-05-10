@@ -22,4 +22,4 @@ How to run image?
 
 2. Run docker image::
 
-    docker run -it docker pull amrit3701/freecad-cli:lastest bash
+    docker run -it amrit3701/freecad-cli:lastest bash
