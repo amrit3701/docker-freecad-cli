@@ -1,56 +1,72 @@
-FROM ubuntu:16.04
+FROM ubuntu:18.04
 MAINTAINER Amritpal Singh <amrit3701@gmail.com>
 
-ENV PYTHON_VERSION 3.7.3
-ENV PYTHON_MINOR_VERSION 3.7
-ENV PYTHON_SUFFIX_VERSION .cpython-37m
-ENV PYTHON_BIN_VERSION python3.7m
+ENV DEBIAN_FRONTEND noninteractive
+
+ENV PYTHON_VERSION 3.8.5
+ENV PYTHON_MINOR_VERSION 3.8
+ENV PYTHON_SUFFIX_VERSION .cpython-38
+ENV PYTHON_BIN_VERSION python3.8
 # if this is called "PIP_VERSION", pip explodes with "ValueError: invalid truth value '<VERSION>'"
 ENV PYTHON_PIP_VERSION 18.0
 
 ENV FREECAD_VERSION master
 ENV FREECAD_REPO git://github.com/FreeCAD/FreeCAD.git
 
-
+# python3.8-distutils https://github.com/deadsnakes/issues/issues/82
 RUN \
     pack_build="git \
                 python$PYTHON_MINOR_VERSION \
                 python$PYTHON_MINOR_VERSION-dev \
+                python$PYTHON_MINOR_VERSION-distutils \
                 wget \
                 build-essential \
                 cmake \
                 libtool \
-                libxerces-c-dev \
                 libboost-dev \
+                libboost-date-time-dev \
                 libboost-filesystem-dev \
-                libboost-regex-dev \
+                libboost-graph-dev \
+                libboost-iostreams-dev \
                 libboost-program-options-dev \
+                libboost-python-dev \
+                libboost-regex-dev \
+                libboost-serialization-dev \
                 libboost-signals-dev \
                 libboost-thread-dev \
-                libboost-python-dev \
                 libqt4-dev \
                 libqt4-opengl-dev \
                 qt4-dev-tools \
-                liboce-modeling-dev \
-                liboce-visualization-dev \
-                liboce-foundation-dev \
-                liboce-ocaf-lite-dev \
-                liboce-ocaf-dev \
-                oce-draw \
-                libeigen3-dev \
                 libqtwebkit-dev \
-                libode-dev \
+                libocct-data-exchange-dev \
+                libocct-draw-dev \
+                libocct-foundation-dev \
+                libocct-modeling-algorithms-dev \
+                libocct-modeling-data-dev \
+                libocct-ocaf-dev \
+                libocct-visualization-dev \
+                occt-draw \
+                libeigen3-dev \
+                libgts-bin \
+                libgts-dev \
+                libkdtree++-dev \
+                libmedc-dev \
+                libopencv-dev \
+                libproj-dev \
+                libvtk7-dev \
+                libxerces-c-dev \
                 libzipios++-dev \
+                libode-dev \
                 libfreetype6 \
                 libfreetype6-dev \
                 netgen-headers \
-                libmedc-dev \
-                libvtk6-dev \
-                libproj-dev \
+                netgen \
+                libmetis-dev \
                 gmsh " \
     && apt update \
     && apt install -y --no-install-recommends software-properties-common \
     && add-apt-repository -y ppa:deadsnakes/ppa \
+    && add-apt-repository -y ppa:freecad-maintainers/freecad-stable \
     && apt update \
     && apt install -y --no-install-recommends $pack_build
 
@@ -98,8 +114,7 @@ RUN \
     && cd \
               \
               # Clean
-                && rm FreeCAD/ freecad-build/ -fR \
-                && ln -s /usr/local/bin/FreeCAD /usr/bin/freecad-git
+                && rm FreeCAD/ freecad-build/ -fR
 
 # Install GUI libraries that require to import Draft, Arch modules.
 RUN pip${PYTHON_MINOR_VERSION} install PySide2
@@ -127,4 +142,4 @@ RUN apt-get clean \
           /usr/share/doc/* \
           /usr/share/locale/* \
           /usr/share/man/* \
-          /usr/share/info/* -fR    
+          /usr/share/info/* -fR
