@@ -132,6 +132,11 @@ COPY Draft_rc.py /usr/local/Mod/Draft/Draft_rc.py
 # Fixed bug in translate.py file.
 COPY translate.py /usr/local/Mod/Draft/draftutils/translate.py
 
+# Fixed import MeshPart module due to missing libnglib.so
+# https://bugs.launchpad.net/ubuntu/+source/freecad/+bug/1866914
+RUN echo "/usr/lib/x86_64-linux-gnu/netgen" >> /etc/ld.so.conf.d/x86_64-linux-gnu.conf
+RUN ldconfig
+
 # Make Python already know all FreeCAD modules / workbenches.
 RUN echo "import FreeCAD\n" > /.startup.py
 ENV PYTHONSTARTUP "/.startup.py"
