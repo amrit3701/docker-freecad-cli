@@ -135,8 +135,9 @@ RUN echo "/usr/lib/x86_64-linux-gnu/netgen" >> /etc/ld.so.conf.d/x86_64-linux-gn
 RUN ldconfig
 
 # Make Python already know all FreeCAD modules / workbenches.
-RUN echo "import FreeCAD\n" > /.startup.py
-ENV PYTHONSTARTUP "/.startup.py"
+ENV FREECAD_STARTUP_FILE /.startup.py
+RUN echo "import FreeCAD\n" > ${FREECAD_STARTUP_FILE}
+ENV PYTHONSTARTUP ${FREECAD_STARTUP_FILE}
 
 # Clean
 RUN apt-get clean \
