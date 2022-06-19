@@ -10,8 +10,9 @@ ENV PYTHON_BIN_VERSION python3.8
 # if this is called "PIP_VERSION", pip explodes with "ValueError: invalid truth value '<VERSION>'"
 ENV PYTHON_PIP_VERSION 18.0
 
-ENV FREECAD_VERSION master
-ENV FREECAD_REPO git://github.com/FreeCAD/FreeCAD.git
+# 0.19 commit
+ENV FREECAD_VERSION 3d6390bc938c17c21ce827f2b74986519c631ef9
+ENV FREECAD_REPO https://github.com/FreeCAD/FreeCAD.git
 
 # python3.8-distutils https://github.com/deadsnakes/issues/issues/82
 RUN \
@@ -94,7 +95,8 @@ ENV PYTHONPATH "/usr/local/lib:$PYTHONPATH"
 RUN \
   # get FreeCAD Git
     cd \
-    && git clone --branch "$FREECAD_VERSION" "$FREECAD_REPO" \
+    && git clone "$FREECAD_REPO" \
+    && git -C /root/FreeCAD checkout "$FREECAD_VERSION" \
     && mkdir freecad-build \
     && cd freecad-build \
   # Build
