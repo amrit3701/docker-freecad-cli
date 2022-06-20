@@ -109,7 +109,7 @@ RUN \
     cd \
     && git clone --branch "$FREECAD_VERSION" "$FREECAD_REPO" \
     && mkdir freecad-build \
-    && cd freecad-build
+    && cd freecad-build \
   # Build
     && cmake \
         -DBUILD_GUI=ON \
