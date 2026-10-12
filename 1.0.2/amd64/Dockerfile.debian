@@ -87,7 +87,7 @@ RUN \
         -DBUILD_FEM_NETGEN=ON \
         -DENABLE_DEVELOPER_TESTS=OFF \
         -DBUILD_TECHDRAW=OFF \
-        -DBUILD_CAM=OFF \
+        -DBUILD_CAM=ON \
         -Wno-dev \
         ../FreeCAD \
   \
